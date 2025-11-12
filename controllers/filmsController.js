@@ -24,4 +24,17 @@ function show(req, res) {
     })
 }
 
-module.exports = { index, show }
+function createReview(req, res) {
+    const film_id = Number(req.params.id)
+    const { username, review, average_rating } = req.body;
+    const sql = `INSERT INTO reviews (username, review, average_rating, film_id) VALUES (?, ?, ?, ?)`
+    connection.query(sql, [username, review, average_rating, film_id], (err, results) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.status(201).json({
+            message: "Recensione creata con successo!",
+            reviewId: results.insertId,
+        });
+    })
+}
+
+module.exports = { index, show, createReview }

@@ -6,4 +6,6 @@ Router.get('/', filmsController.index)
 
 Router.get('/:id', filmsController.show)
 
+Router.post('/:id/review', filmsController.createReview)
+
 module.exports = Router
