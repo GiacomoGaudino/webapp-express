@@ -1,7 +1,7 @@
 const connection = require('../database/connection.js')
 
 function index(req, res) {
-    const sql = 'SELECT * FROM films'
+    const sql = 'SELECT films.*, AVG(reviews.average_rating) FROM films JOIN reviews ON reviews.film_id = films.id GROUP BY films.id'
     connection.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message })
         res.json(results)
@@ -9,7 +9,7 @@ function index(req, res) {
 }
 
 function show(req, res) {
-    const sql = 'SELECT * FROM films WHERE id = ?'
+    const sql = 'SELECT films.*, AVG(reviews.average_rating) FROM films JOIN reviews ON reviews.film_id = films.id WHERE films.id = ? GROUP BY films.id '
     const reviewSql = 'SELECT * FROM reviews WHERE film_id = ?'
     const id = Number(req.params.id)
     connection.query(sql, [id], (err, results) => {
