@@ -12,17 +12,17 @@ app.use(express.json())
 app.use(cors())
 
 
-app.listen(PORT, () => {
-    console.log(`server is running on port http://localhost:${PORT}`);
-})
-
 app.get('/', (req, res) => {
     res.json('Welcome to the films Webapp Backend')
 })
 
 app.use('/api/films', filmRouter)
 
+app.use(notFound)
+
 app.use(serverError)
 
-app.use(notFound)
+app.listen(PORT, () => {
+    console.log(`server is running on port http://localhost:${PORT}`);
+})
 

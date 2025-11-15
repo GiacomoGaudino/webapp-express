@@ -1,16 +1,4 @@
 const connection = require('../database/connection.js')
-const multer = require('multer')
-const path = require('path');
-const filmsController = require('../controllers/filmsController.js')
-
-const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../static/images'),
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    }
-});
-
-const upload = multer({ storage });
 
 function index(req, res) {
     const sql = 'SELECT films.*, AVG(reviews.average_rating) AS avg FROM films LEFT JOIN reviews ON reviews.film_id = films.id GROUP BY films.id'
@@ -29,7 +17,7 @@ function show(req, res) {
         if (results.length === 0) return res.status(404).json({ error: 'film not found' })
 
         connection.query(reviewSql, [id], (reviewsErr, reviewsResults) => {
-            if (reviewsErr) return res.status(500).json({ error: err.message })
+            if (reviewsErr) return res.status(500).json({ error: reviewsErr.message })
             const thisFilm = { ...results[0], review: reviewsResults }
             res.json(thisFilm)
         })

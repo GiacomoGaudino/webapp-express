@@ -1,15 +1,6 @@
 const Router = require('express').Router()
-const multer = require('multer')
-const path = require('path')
 const filmsController = require('../controllers/filmsController.js')
-const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../static/images'),
-    filename: (req, file, cb) => {
-        cb(null, `${file.originalname}`)
-    }
-})
-const upload = multer({ storage })
-
+const upload = require('../middleware/upload.js')
 
 Router.get('/', filmsController.index)
 
