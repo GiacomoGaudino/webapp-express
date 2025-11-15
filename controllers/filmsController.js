@@ -1,15 +1,16 @@
 const connection = require('../database/connection.js')
 const multer = require('multer')
 const path = require('path');
+const filmsController = require('../controllers/filmsController.js')
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname, '../public/images'),
-    filename: function (req, file, cb) {
-        cb(null, file.originalname)
+    destination: path.join(__dirname, '../static/images'),
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
     }
 });
-const upload = multer({ storage })
 
+const upload = multer({ storage });
 
 function index(req, res) {
     const sql = 'SELECT films.*, AVG(reviews.average_rating) AS avg FROM films LEFT JOIN reviews ON reviews.film_id = films.id GROUP BY films.id'
@@ -36,8 +37,8 @@ function show(req, res) {
 }
 
 function store(req, res) {
-    console.log(req.body);
-    const cover_image = `${process.env.server_address}:${process.env.port}/static/images/` + req.file.originalname
+    console.log(req.body, req.file);
+    const cover_image = req.file ? `/images/${req.file.originalname}` : null;
     const { name, director, synopsis, release_date, duration, language } = req.body
     console.log(name);
 

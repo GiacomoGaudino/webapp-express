@@ -3,10 +3,11 @@ const filmRouter = require('./routes/films.js')
 const notFound = require('./middleware/notFound.js')
 const serverError = require('./middleware/serverError.js')
 const cors = require("cors")
+const path = require('path')
 const app = express()
 const PORT = process.env.PORT || 3000
 
-app.use(express.static('static'))
+app.use('/images', express.static(path.join(__dirname, 'static/images')))
 app.use(express.json())
 app.use(cors())
 
