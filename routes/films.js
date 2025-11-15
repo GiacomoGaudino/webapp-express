@@ -10,4 +10,6 @@ Router.post('/', upload.single('cover_image'), filmsController.store)
 
 Router.post('/:id/reviews', upload.none(), filmsController.createReview)
 
+Router.delete('/:id', filmsController.destroy)
+
 module.exports = Router

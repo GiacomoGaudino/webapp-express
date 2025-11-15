@@ -57,4 +57,15 @@ function createReview(req, res) {
     })
 }
 
-module.exports = { index, show, store, createReview }
+function destroy(req, res) {
+    const film_id = Number(req.params.id)
+    const sql = `DELETE FROM films WHERE (id = ?)`
+    connection.query(sql, [film_id], (err) => {
+        if (err) return res.status(500).json({ error: err.message })
+        res.status(200).json({
+            message: "Film cancellato",
+        })
+    })
+}
+
+module.exports = { index, show, store, createReview, destroy }
